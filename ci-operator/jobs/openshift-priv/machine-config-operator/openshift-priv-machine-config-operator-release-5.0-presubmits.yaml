@@ -2535,6 +2535,8 @@ presubmits:
     trigger: (?m)^/test( | .* )e2e-gcp-op,?($|\s.*)
   - agent: kubernetes
     always_run: false
+    annotations:
+      pipeline_skip_if_only_changed: ^docs/|\.md$|^(?:.*/)?(?:\.gitignore|OWNERS|OWNERS_ALIASES|LICENSE)$
     branches:
     - ^release-5\.0$
     - ^release-5\.0-
@@ -2554,7 +2556,6 @@ presubmits:
     name: pull-ci-openshift-priv-machine-config-operator-release-5.0-e2e-gcp-op-ocl-part1
     path_alias: github.com/openshift/machine-config-operator
     rerun_command: /test e2e-gcp-op-ocl-part1
-    skip_if_only_changed: ^docs/|\.md$|^(?:.*/)?(?:\.gitignore|OWNERS|OWNERS_ALIASES|LICENSE)$
     spec:
       containers:
       - args:
@@ -2626,6 +2627,8 @@ presubmits:
     trigger: (?m)^/test( | .* )e2e-gcp-op-ocl-part1,?($|\s.*)
   - agent: kubernetes
     always_run: false
+    annotations:
+      pipeline_skip_if_only_changed: ^docs/|\.md$|^(?:.*/)?(?:\.gitignore|OWNERS|OWNERS_ALIASES|LICENSE)$
     branches:
     - ^release-5\.0$
     - ^release-5\.0-
@@ -2645,7 +2648,6 @@ presubmits:
     name: pull-ci-openshift-priv-machine-config-operator-release-5.0-e2e-gcp-op-ocl-part2
     path_alias: github.com/openshift/machine-config-operator
     rerun_command: /test e2e-gcp-op-ocl-part2
-    skip_if_only_changed: ^docs/|\.md$|^(?:.*/)?(?:\.gitignore|OWNERS|OWNERS_ALIASES|LICENSE)$
     spec:
       containers:
       - args:
