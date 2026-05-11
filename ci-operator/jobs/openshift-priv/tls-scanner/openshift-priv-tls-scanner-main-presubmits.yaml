@@ -69,6 +69,7 @@ presubmits:
     branches:
     - ^main$
     - ^main-
+    cluster: build11
     context: ci/prow/smoke-tls
     decorate: true
     decoration_config:

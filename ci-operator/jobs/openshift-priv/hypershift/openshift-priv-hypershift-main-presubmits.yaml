@@ -1470,6 +1470,7 @@ presubmits:
     branches:
     - ^main$
     - ^main-
+    cluster: build01
     context: ci/prow/e2e-azure-v2-self-managed
     decorate: true
     decoration_config:

@@ -95,6 +95,7 @@ presubmits:
     branches:
     - ^release-4\.23$
     - ^release-4\.23-
+    cluster: build07
     context: ci/prow/e2e-aws-operator-parallel-ote
     decorate: true
     decoration_config:
@@ -275,6 +276,7 @@ presubmits:
     branches:
     - ^release-4\.23$
     - ^release-4\.23-
+    cluster: build07
     context: ci/prow/e2e-aws-operator-preferred-host-ote
     decorate: true
     decoration_config:

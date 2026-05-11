@@ -85,6 +85,7 @@ presubmits:
     branches:
     - ^release-5\.1$
     - ^release-5\.1-
+    cluster: build10
     context: ci/prow/e2e-aws-operator-parallel-ote
     decorate: true
     labels:
@@ -245,6 +246,7 @@ presubmits:
     branches:
     - ^release-5\.1$
     - ^release-5\.1-
+    cluster: build10
     context: ci/prow/e2e-aws-operator-preferred-host-ote
     decorate: true
     labels:

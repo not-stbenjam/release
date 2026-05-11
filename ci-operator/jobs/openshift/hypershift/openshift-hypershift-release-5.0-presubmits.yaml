@@ -1310,6 +1310,7 @@ presubmits:
     branches:
     - ^release-5\.0$
     - ^release-5\.0-
+    cluster: build06
     context: ci/prow/e2e-azure-v2-self-managed
     decorate: true
     labels:

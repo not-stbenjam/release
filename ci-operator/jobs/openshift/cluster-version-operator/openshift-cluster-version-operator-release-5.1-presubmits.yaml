@@ -1397,6 +1397,7 @@ presubmits:
     branches:
     - ^release-5\.1$
     - ^release-5\.1-
+    cluster: build10
     context: ci/prow/tls-scanner-default-profile
     decorate: true
     labels:
@@ -1477,6 +1478,7 @@ presubmits:
     branches:
     - ^release-5\.1$
     - ^release-5\.1-
+    cluster: build10
     context: ci/prow/tls-scanner-modern-profile
     decorate: true
     labels:
