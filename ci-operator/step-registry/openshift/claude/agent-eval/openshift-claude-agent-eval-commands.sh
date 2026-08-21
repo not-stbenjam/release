@@ -6,15 +6,17 @@
 #   EVAL_CONFIG  -- path to eval.yaml (relative to repo root)
 #
 # Optional env:
-#   EVAL_MODEL        -- model for the skill under test (default: claude-sonnet-4-6)
-#   EVAL_PARALLELISM  -- number of test cases to run concurrently (default: 1)
-#   EVAL_CASES        -- comma-separated list of case IDs to run (default: all)
-#   EVAL_DISCOVER     -- "true" or glob pattern to auto-discover eval configs
-#   EVAL_BASELINE     -- run-id of a previous run to compare against
-#   EVAL_EXTRA_ARGS   -- additional args passed to /eval-run
-#   EVAL_SETUP_SCRIPT -- script to run before eval (e.g. snapshot extraction)
-#   CLAUDE_MODEL      -- model for the eval harness orchestrator (default: claude-sonnet-4-6)
-#   EVAL_MAX_TURNS    -- max conversation turns for the orchestrator (default: 100)
+#   EVAL_HARNESS_REPO -- git repository containing the eval harness
+#   EVAL_HARNESS_REF  -- optional branch or tag of the eval harness
+#   EVAL_MODEL         -- model for the skill under test (default: claude-sonnet-4-6)
+#   EVAL_PARALLELISM   -- number of test cases to run concurrently (default: 1)
+#   EVAL_CASES         -- comma-separated list of case IDs to run (default: all)
+#   EVAL_DISCOVER      -- "true" or glob pattern to auto-discover eval configs
+#   EVAL_BASELINE      -- run-id of a previous run to compare against
+#   EVAL_EXTRA_ARGS    -- additional args passed to /eval-run
+#   EVAL_SETUP_SCRIPT  -- script to run before eval (e.g. snapshot extraction)
+#   CLAUDE_MODEL       -- model for the eval harness orchestrator (default: claude-sonnet-4-6)
+#   EVAL_MAX_TURNS     -- max conversation turns for the orchestrator (default: 100)
 
 set -o nounset
 set -o errexit
@@ -26,6 +28,14 @@ echo "Starting claude-agent-eval"
 if [[ -n "${MULTISTAGE_PARAM_OVERRIDE_EVAL_MODEL:-}" ]]; then
     echo "Applying Gangway override: EVAL_MODEL=${MULTISTAGE_PARAM_OVERRIDE_EVAL_MODEL}"
     EVAL_MODEL="${MULTISTAGE_PARAM_OVERRIDE_EVAL_MODEL}"
+fi
+if [[ -n "${MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REPO:-}" ]]; then
+    echo "Applying Gangway override: EVAL_HARNESS_REPO=${MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REPO}"
+    EVAL_HARNESS_REPO="${MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REPO}"
+fi
+if [[ -n "${MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REF:-}" ]]; then
+    echo "Applying Gangway override: EVAL_HARNESS_REF=${MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REF}"
+    EVAL_HARNESS_REF="${MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REF}"
 fi
 
 # Load GitHub token for gh CLI access (same secret as payload-agent)
@@ -109,8 +119,11 @@ fi
 echo ""
 echo "=== Installing plugins ==="
 EVAL_HARNESS_DIR="/tmp/agent-eval-harness"
-git clone --depth 1 https://github.com/opendatahub-io/agent-eval-harness.git "${EVAL_HARNESS_DIR}"
-echo "agent-eval-harness cloned."
+# EVAL_HARNESS_REPO / EVAL_HARNESS_REF select the harness source. They default
+# to the upstream repository's default branch.
+EVAL_HARNESS_REPO="${EVAL_HARNESS_REPO:-https://github.com/opendatahub-io/agent-eval-harness.git}"
+git clone --depth 1 ${EVAL_HARNESS_REF:+--branch "${EVAL_HARNESS_REF}"} "${EVAL_HARNESS_REPO}" "${EVAL_HARNESS_DIR}"
+echo "agent-eval-harness cloned from ${EVAL_HARNESS_REPO} (ref: ${EVAL_HARNESS_REF:-default})."
 
 # -----------------------------------------------------------------------
 # Run optional setup script (e.g. extract snapshots, populate fixtures)

@@ -10,6 +10,32 @@ ref:
     name: claude-payload-agent-github-token
     mount_path: /var/run/github-token
   env:
+  - name: EVAL_HARNESS_REPO
+    default: "https://github.com/opendatahub-io/agent-eval-harness.git"
+    documentation: |-
+      Git repository containing the agent eval harness.
+  - name: EVAL_HARNESS_REF
+    default: ""
+    documentation: |-
+      Optional branch or tag of EVAL_HARNESS_REPO to clone.
+  - name: MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REPO
+    default: ""
+    documentation: |-
+      Gangway API override for EVAL_HARNESS_REPO. Pass it as:
+      "pod_spec_options": {
+        "envs": {
+          "MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REPO": "https://github.com/example/agent-eval-harness.git"
+        }
+      }
+  - name: MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REF
+    default: ""
+    documentation: |-
+      Gangway API override for EVAL_HARNESS_REF. Pass it as:
+      "pod_spec_options": {
+        "envs": {
+          "MULTISTAGE_PARAM_OVERRIDE_EVAL_HARNESS_REF": "feature-branch"
+        }
+      }
   - name: EVAL_CONFIG
     default: "eval.yaml"
   - name: EVAL_MODEL
